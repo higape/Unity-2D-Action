@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Character
+  - Water
+  - UI
+  - Ground
+  - SlickGround
+  - MovingPlatform
+  - Player
+  - Enemy
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1312463909
+    locked: 0
+  - name: Ground
+    uniqueID: 3955440065
+    locked: 0
+  - name: Fruit
+    uniqueID: 2413491081
+    locked: 0
+  - name: Trap
+    uniqueID: 4126655253
+    locked: 0
+  - name: Character
+    uniqueID: 1193012197
+    locked: 0
+  - name: Bullet
+    uniqueID: 3907158675
+    locked: 0
+  - name: Effect
+    uniqueID: 1928985361
+    locked: 0
