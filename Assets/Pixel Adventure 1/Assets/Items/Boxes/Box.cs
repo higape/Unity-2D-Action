@@ -6,6 +6,8 @@ namespace MyGame
     {
         public int hp = 1;
         public GameObject breakPrefab;
+        public GameObject instantialPrefab;
+        public Vector3 instantialOffset;
 
         private Animator Animator { get; set; }
 
@@ -21,7 +23,16 @@ namespace MyGame
                 hp -= attack;
                 if (hp <= 0)
                 {
-                    Instantiate(breakPrefab, transform.position, Quaternion.identity);
+                    if (instantialPrefab != null)
+                        Instantiate(breakPrefab, transform.position, Quaternion.identity);
+
+                    if (instantialPrefab != null)
+                        Instantiate(
+                            instantialPrefab,
+                            transform.position + instantialOffset,
+                            Quaternion.identity
+                        );
+
                     Destroy(gameObject);
                 }
                 else

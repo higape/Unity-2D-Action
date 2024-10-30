@@ -30,17 +30,11 @@ namespace MyGame
             ApplyAddedVelocity();
         }
 
-        private IEnumerator DelayChangeState(Action action, float time)
-        {
-            yield return new WaitForSeconds(time);
-            action();
-        }
-
         private void GoToIdle()
         {
             Animator.Play(IdleHash);
             CurrentAction = IdleUpdate;
-            TempCoroutine = DelayChangeState(GoToWalk, blankTime);
+            TempCoroutine = DelayAction(GoToWalk, blankTime);
             StartCoroutine(TempCoroutine);
         }
 
@@ -60,7 +54,7 @@ namespace MyGame
             Animator.Play(WalkHash);
             CurrentAction = WalkUpdate;
             FaceBack();
-            TempCoroutine = DelayChangeState(GoToIdle, blankTime);
+            TempCoroutine = DelayAction(GoToIdle, blankTime);
             StartCoroutine(TempCoroutine);
         }
 

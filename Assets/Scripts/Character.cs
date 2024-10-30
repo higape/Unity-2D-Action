@@ -112,7 +112,7 @@ namespace MyGame
         protected virtual void OnHitEnd()
         {
             if (Hp <= 0)
-                Destroy(gameObject);
+                Dead();
         }
 
         public virtual void Dead()

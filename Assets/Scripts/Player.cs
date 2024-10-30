@@ -6,7 +6,6 @@ namespace MyGame
 {
     public sealed class Player : Character
     {
-        public const int MaxHp = 99;
         private static int score = 0;
 
         public static Vector2 RebornPosition { get; set; }
@@ -29,6 +28,7 @@ namespace MyGame
         private Action CurrentAction { get; set; }
         public bool IsOnGround { get; private set; }
         public Vector2 HitVelocity { get; private set; }
+        public int MaxHp { get; private set; }
 
         public override int Hp
         {
@@ -44,6 +44,7 @@ namespace MyGame
         {
             base.Awake();
             PlayerInput = GetComponent<PlayerInput>();
+            MaxHp = hp;
         }
 
         private void Start()
@@ -56,16 +57,25 @@ namespace MyGame
         private void Update()
         {
             IsOnGround = GroundCast(groundMask);
+            if (IsOnGround)
+                CanStopJump = true;
             UpdateInvalidTime();
             CurrentAction?.Invoke();
             ApplyAddedVelocity();
-            CanStopJump = true;
 
             if (PlayerInput.actions["Test1"].WasPerformedThisFrame())
             {
                 print("Test1");
             }
 
+            if (PlayerInput.actions["Test2"].WasPerformedThisFrame())
+            {
+                print("Test2");
+            }
+        }
+
+        private void UpdateAttack()
+        {
             if (PlayerInput.actions["Fire"].WasPerformedThisFrame())
             {
                 LaunchBullet();
@@ -87,7 +97,7 @@ namespace MyGame
         protected override void OnHitEnd()
         {
             if (Hp <= 0)
-                Destroy(gameObject);
+                Dead();
             else
                 GoToIdle();
         }
@@ -95,9 +105,16 @@ namespace MyGame
         public override void Dead()
         {
             Hp = 0;
-            CurrentAction = NoMove;
+            CurrentAction = DeadUpdate;
+            Rigidbody.gravityScale = 0;
+            Rigidbody.velocity = Vector2.zero;
             Animator.Play(DesappearingHash);
             StartCoroutine(DelayAction(Reborn, 2f));
+        }
+
+        private void DeadUpdate()
+        {
+            Rigidbody.velocity = Vector2.zero;
         }
 
         public void Reborn()
@@ -164,6 +181,7 @@ namespace MyGame
 
         private void IdleUpdate()
         {
+            UpdateAttack();
             if (!IsOnGround)
             {
                 GoToFall();
@@ -186,6 +204,7 @@ namespace MyGame
 
         private void RunUpdate()
         {
+            UpdateAttack();
             if (!IsOnGround)
             {
                 GoToFall();
@@ -213,6 +232,7 @@ namespace MyGame
 
         private void JumpUpdate()
         {
+            UpdateAttack();
             IsStartedJumpThisFrame = false;
             if (!PlayerInput.actions["Jump"].IsPressed())
             {
@@ -239,6 +259,8 @@ namespace MyGame
 
         private void FallUpdate()
         {
+            UpdateAttack();
+
             if (IsOnGround)
             {
                 GoToIdle();
@@ -254,6 +276,7 @@ namespace MyGame
 
         private void GoToHit()
         {
+            Rigidbody.gravityScale = 1;
             Animator.Play(HitHash);
             CurrentAction = HitUpdate;
         }

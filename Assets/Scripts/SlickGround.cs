@@ -48,6 +48,15 @@ namespace MyGame
             for (int i = 0; i < Pairs.Count; i++)
             {
                 Pair pair = Pairs[i];
+
+                // 角色被销毁
+                if (pair.character == null)
+                {
+                    Pairs.RemoveAt(i);
+                    i--;
+                    continue;
+                }
+
                 // 角色不在地上
                 if (!pair.character.IsOnSlickGround)
                 {
